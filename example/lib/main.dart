@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rich_input/rich_input_controller.dart';
+import 'package:rich_input/rich_input.dart';
 
 void main() {
   runApp(MyApp());
@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextField(
+              RichInput(
                 focusNode: _focusNode,
                 controller: _controller,
               ),

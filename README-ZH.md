@@ -11,13 +11,37 @@
 -   支持自定义高亮效果，及自定义样式
 -   支持自定义 data 字段，增强富文本的能力
 
-![Demo](demo.jpg)
+![Demo](demo.png)
 
 ## 开始入门
 
+核心代码
+
+```dart
+RichInputController controller = RichInputController(text: "Text");
+
+const block = RichBlock(
+  text: " @abc ",
+  data: " @123456 ",
+  style: TextStyle(
+    color: Colors.blue,
+    fontWeight: FontWeight.bold,
+  ),
+);
+controller.addBlock(block);
+// Get custom data
+print(controller.data);
+// Get text
+print(controller.text);
+
+// RichInput(controller: controller);
+```
+
+详细示例
+
 ```dart
 import 'package:flutter/material.dart';
-import 'package:rich_input/rich_input_controller.dart';
+import 'package:rich_input/rich_input.dart';
 
 void main() {
   runApp(MyApp());
@@ -63,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextField(
+              RichInput(
                 focusNode: _focusNode,
                 controller: _controller,
               ),

@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rich_input/rich_input_controller.dart';
 
+export 'rich_input_controller.dart';
+
+/// Expanded textfield support @someone #subjects with highlighting display.
 class RichInput extends TextField {
   const RichInput({
     Key key,

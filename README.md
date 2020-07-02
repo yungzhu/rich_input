@@ -11,13 +11,37 @@ Language: [English](README.md) | [中文简体](README-ZH.md)
 -   Support for custom highlighting, and custom styles
 -   Support for custom data fields to enhance rich text
 
-![Demo](demo.jpg)
+![Demo](demo.png)
 
 ## Getting Started
 
+Core code
+
+```dart
+RichInputController controller = RichInputController(text: "Text");
+
+const block = RichBlock(
+  text: " @abc ",
+  data: " @123456 ",
+  style: TextStyle(
+    color: Colors.blue,
+    fontWeight: FontWeight.bold,
+  ),
+);
+controller.addBlock(block);
+// Get custom data
+print(controller.data);
+// Get text
+print(controller.text);
+
+// RichInput(controller: controller);
+```
+
+Example
+
 ```dart
 import 'package:flutter/material.dart';
-import 'package:rich_input/rich_input_controller.dart';
+import 'package:rich_input/rich_input.dart';
 
 void main() {
   runApp(MyApp());
@@ -63,7 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TextField(
+              RichInput(
                 focusNode: _focusNode,
                 controller: _controller,
               ),

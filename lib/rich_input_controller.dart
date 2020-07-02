@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+/// Expanded from TextEditingController,Add addBlock method and data property.
 class RichInputController extends TextEditingController {
   final List<RichBlock> _blocks = [];
   RegExp _exp;
 
   RichInputController({String text}) : super(text: text);
 
+  /// Add a rich media [RichBlock]
   void addBlock(RichBlock block) {
     if (_blocks.indexWhere((element) => element.text == block.text) < 0) {
       _blocks.add(block);
@@ -15,6 +17,7 @@ class RichInputController extends TextEditingController {
     text += block.text;
   }
 
+  /// Get extended data information
   String get data {
     String str = text;
     _blocks.forEach((element) {
@@ -62,6 +65,7 @@ class RichInputController extends TextEditingController {
   }
 }
 
+/// Rich Media Data Blocks
 class RichBlock {
   final String text;
   final String data;
@@ -73,13 +77,3 @@ class RichBlock {
     this.style = const TextStyle(color: Colors.blue),
   });
 }
-
-// class _RichInputFormatter extends TextInputFormatter {
-//   @override
-//   TextEditingValue formatEditUpdate(
-//     TextEditingValue oldValue,
-//     TextEditingValue newValue,
-//   ) {
-//     return newValue;
-//   }
-// }

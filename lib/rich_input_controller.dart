@@ -32,15 +32,15 @@ class RichInputController extends TextEditingController {
       _blocks.clear();
     }
 
-    List<TextSpan> children = [];
+    final List<TextSpan> children = [];
 
     text.splitMapJoin(
       _exp,
-      onMatch: (Match m) {
+      onMatch: (m) {
         final key = m[0];
-        RichBlock block = _blocks.firstWhere((element) {
+        final RichBlock block = _blocks.firstWhere((element) {
           return element.text == key;
-        }, orElse: null);
+        }, orElse: () => null);
         if (block != null) {
           children.add(
             TextSpan(
@@ -51,7 +51,7 @@ class RichInputController extends TextEditingController {
         }
         return key;
       },
-      onNonMatch: (String span) {
+      onNonMatch: (span) {
         if (span != "") {
           children.add(TextSpan(text: span, style: style));
         }

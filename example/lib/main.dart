@@ -28,6 +28,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     _focusNode = FocusNode();
     _controller = RichInputController(text: "Text");
+
+    // Refresh text display, not required
+    _controller.addListener(() {
+      setState(() {});
+    });
     super.initState();
   }
 

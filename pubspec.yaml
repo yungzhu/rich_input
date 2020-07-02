@@ -1,8 +1,7 @@
 name: rich_input
-description: A new Flutter package.
-version: 0.0.1
-author:
-homepage:
+description: Rich input box, implement @someone and subject with color highlighting.
+version: 1.0.0
+homepage: https://github.com/yungzhu/rich_input
 
 environment:
     sdk: ">=2.7.0 <3.0.0"

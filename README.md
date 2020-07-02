@@ -18,15 +18,14 @@ Language: [English](README.md) | [中文简体](README-ZH.md)
 Core code
 
 ```dart
+import 'package:rich_input/rich_input.dart';
+
 RichInputController controller = RichInputController(text: "Text");
 
 const block = RichBlock(
-  text: " @abc ",
-  data: " @123456 ",
-  style: TextStyle(
-    color: Colors.blue,
-    fontWeight: FontWeight.bold,
-  ),
+  text: "@somebody",
+  data: "@123456",
+  style: TextStyle(color: Colors.blue),
 );
 controller.addBlock(block);
 // Get custom data

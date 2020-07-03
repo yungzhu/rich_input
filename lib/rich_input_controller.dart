@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-/// Expanded from TextEditingController,Add addBlock method and data property.
+/// Expanded from TextEditingController,add insertBlock,insertText method and data property.
 class RichInputController extends TextEditingController {
   final List<RichBlock> _blocks = [];
   RegExp _exp;

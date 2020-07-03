@@ -8,13 +8,41 @@ class RichInputController extends TextEditingController {
 
   RichInputController({String text}) : super(text: text);
 
-  /// Add a rich media [RichBlock]
-  void addBlock(RichBlock block) {
+  /// Insert a rich media [RichBlock] in the cursor position
+  void insertBlock(RichBlock block) {
     if (_blocks.indexWhere((element) => element.text == block.text) < 0) {
       _blocks.add(block);
       _exp = RegExp(_blocks.map((e) => e.text).join('|'));
     }
-    text += block.text;
+    insertText(block.text);
+  }
+
+  @override
+  void clear() {
+    _blocks.clear();
+    super.clear();
+  }
+
+  /// Insert text in the cursor position
+  void insertText(String text) {
+    final selection = value.selection;
+    if (selection.baseOffset == -1) {
+      this.text += text;
+      return;
+    } else {
+      String str = selection.textBefore(this.text);
+      str += text;
+      str += selection.textAfter(this.text);
+
+      value = value.copyWith(
+        text: str,
+        selection: selection.copyWith(
+          baseOffset: selection.baseOffset + text.length,
+          extentOffset: selection.baseOffset + text.length,
+        ),
+        composing: value.composing,
+      );
+    }
   }
 
   /// Get extended data information
@@ -28,11 +56,33 @@ class RichInputController extends TextEditingController {
 
   @override
   TextSpan buildTextSpan({TextStyle style, bool withComposing}) {
+    if (value.text.isEmpty) {
+      _blocks.clear();
+    }
+
+    if (!value.composing.isValid || !withComposing) {
+      return _getTextSpan(text, style);
+    }
+
+    final TextStyle composingStyle = style.merge(
+      const TextStyle(decoration: TextDecoration.underline),
+    );
+    return TextSpan(
+      style: style,
+      children: <TextSpan>[
+        _getTextSpan(value.composing.textBefore(value.text), style),
+        TextSpan(
+          style: composingStyle,
+          text: value.composing.textInside(value.text),
+        ),
+        _getTextSpan(value.composing.textAfter(value.text), style),
+      ],
+    );
+  }
+
+  TextSpan _getTextSpan(String text, TextStyle style) {
     if (_exp == null) {
       return TextSpan(style: style, text: text);
-    }
-    if (text.isEmpty) {
-      _blocks.clear();
     }
 
     final List<TextSpan> children = [];

@@ -54,19 +54,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   RaisedButton(
                     onPressed: () {
-                      _controller.text += "Text";
+                      _controller.insertText("Text");
                     },
                     child: const Text("Add Text"),
                   ),
                   RaisedButton(
                     onPressed: () {
-                      _controller.text += "😁";
+                      _controller.insertText("😁");
                     },
                     child: const Text("Add 😁"),
                   ),
                   RaisedButton(
                     onPressed: () {
-                      _controller.text += "👍";
+                      _controller.insertText("👍");
                     },
                     child: const Text("Add 👍"),
                   ),
@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           fontWeight: FontWeight.bold,
                         ),
                       );
-                      _controller.addBlock(block);
+                      _controller.insertBlock(block);
                     },
                     child: const Text("Add @    "),
                   ),
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           fontWeight: FontWeight.bold,
                         ),
                       );
-                      _controller.addBlock(block);
+                      _controller.insertBlock(block);
                     },
                     child: const Text("Add #"),
                   ),

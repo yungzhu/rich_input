@@ -27,10 +27,11 @@ const block = RichBlock(
   data: "@123456",
   style: TextStyle(color: Colors.blue),
 );
-controller.addBlock(block);
-// Get custom data
+controller.insertBlock(block);
+
+// 获取自定义数据
 print(controller.data);
-// Get text
+// 获取文本
 print(controller.text);
 
 // RichInput(controller: controller);
@@ -95,19 +96,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   RaisedButton(
                     onPressed: () {
-                      _controller.text += "Text";
+                      _controller.insertText("Text");
                     },
                     child: const Text("Add Text"),
                   ),
                   RaisedButton(
                     onPressed: () {
-                      _controller.text += "😁";
+                      _controller.insertText("😁");
                     },
                     child: const Text("Add 😁"),
                   ),
                   RaisedButton(
                     onPressed: () {
-                      _controller.text += "👍";
+                      _controller.insertText("👍");
                     },
                     child: const Text("Add 👍"),
                   ),
@@ -121,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           fontWeight: FontWeight.bold,
                         ),
                       );
-                      _controller.addBlock(block);
+                      _controller.insertBlock(block);
                     },
                     child: const Text("Add @    "),
                   ),
@@ -135,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           fontWeight: FontWeight.bold,
                         ),
                       );
-                      _controller.addBlock(block);
+                      _controller.insertBlock(block);
                     },
                     child: const Text("Add #"),
                   ),

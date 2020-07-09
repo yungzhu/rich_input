@@ -1,3 +1,7 @@
+## [1.0.3] 2020-7-9
+
+-   Fix known bugs
+
 ## [1.0.2] 2020-7-3
 
 -   Modify the method addBloack to insertBlock.

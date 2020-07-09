@@ -12,9 +12,9 @@ class RichInputController extends TextEditingController {
   void insertBlock(RichBlock block) {
     if (_blocks.indexWhere((element) => element.text == block.text) < 0) {
       _blocks.add(block);
-      _exp = RegExp(_blocks.map((e) => e.text).join('|'));
+      _exp = RegExp(_blocks.map((e) => e._key).join('|'));
     }
-    insertText(block.text);
+    insertText(block._key);
   }
 
   @override
@@ -49,7 +49,7 @@ class RichInputController extends TextEditingController {
   String get data {
     String str = text;
     _blocks.forEach((element) {
-      str = str.replaceAll(element.text, element.data);
+      str = str.replaceAll(element._key, element.data);
     });
     return str;
   }
@@ -92,7 +92,7 @@ class RichInputController extends TextEditingController {
       onMatch: (m) {
         final key = m[0];
         final RichBlock block = _blocks.firstWhere((element) {
-          return element.text == key;
+          return element._key == key;
         }, orElse: () => null);
         if (block != null) {
           children.add(
@@ -120,10 +120,11 @@ class RichBlock {
   final String text;
   final String data;
   final TextStyle style;
+  final String _key;
 
   const RichBlock({
     @required this.text,
     @required this.data,
     this.style = const TextStyle(color: Colors.blue),
-  });
+  }) : _key = "$text\u200B";
 }

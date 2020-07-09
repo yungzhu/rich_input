@@ -1,3 +1,7 @@
+## [1.1.0] 2020-7-9
+
+-   New: can delete the entire block character with one key
+
 ## [1.0.3] 2020-7-9
 
 -   Fix known bugs

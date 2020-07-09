@@ -73,8 +73,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   RaisedButton(
                     onPressed: () {
                       const block = RichBlock(
-                        text: " @abc ",
-                        data: " @123456 ",
+                        text: "@abc",
+                        data: "@123456",
                         style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
@@ -87,8 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   RaisedButton(
                     onPressed: () {
                       const block = RichBlock(
-                        text: " #subject ",
-                        data: " #888999 ",
+                        text: "#subject ",
+                        data: "#888999 ",
                         style: TextStyle(
                           color: Colors.red,
                           fontWeight: FontWeight.bold,

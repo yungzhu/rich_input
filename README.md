@@ -7,8 +7,9 @@ Language: [English](README.md) | [中文简体](README-ZH.md)
 ## Special feature
 
 -   Use native textfield capabilities with less code, less disruption and subsequent compatibility
--   Support @someone #topic and insert emojis, etc.
+-   Support @someone #topic and insert emojis, etc
 -   Support for custom highlighting, and custom styles
+-   Support for using the backspace key to delete entire special text blocks
 -   Support for custom data fields to enhance rich text
 
 ![Demo](demo.png)

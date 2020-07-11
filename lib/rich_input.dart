@@ -126,8 +126,14 @@ class RichInputController extends TextEditingController {
   void insertText(String text) {
     final selection = value.selection;
     if (selection.baseOffset == -1) {
-      this.text += text;
-      return;
+      final String str = this.text + text;
+      value = value.copyWith(
+        text: str,
+        selection: selection.copyWith(
+          baseOffset: text.length,
+          extentOffset: text.length,
+        ),
+      );
     } else {
       String str = selection.textBefore(this.text);
       str += text;
@@ -238,30 +244,40 @@ class _RichInputFormat implements TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     final oldText = oldValue.text;
-    if (oldText.length - newValue.text.length == 1) {
-      final char = oldText.substring(
+    final delLength = oldText.length - newValue.text.length;
+    String char;
+    int offset;
+    if (delLength == 1) {
+      char = oldText.substring(
           newValue.selection.baseOffset, newValue.selection.baseOffset + 1);
-      if (char == _specialChar) {
-        final newText = newValue.text;
-        final oldStr = newValue.selection.textBefore(newText);
-        final delStr = "$oldStr{#del#}";
-        String str = delStr;
-        controller._blocks.forEach((element) {
-          str = str.replaceFirst("${element.text}{#del#}", "");
-        });
-        if (str != delStr && str != oldStr) {
-          str += newValue.selection.textInside(newText) +
-              newValue.selection.textAfter(newText);
+      offset = newValue.selection.baseOffset;
+    } else if (delLength == 2) {
+      // two characters will be deleted on huawei
+      char = oldText.substring(
+          newValue.selection.baseOffset + 1, newValue.selection.baseOffset + 2);
+      offset = newValue.selection.baseOffset + 1;
+    }
 
-          final len = newText.length - str.length;
-          return newValue.copyWith(
-            text: str,
-            selection: newValue.selection.copyWith(
-              baseOffset: newValue.selection.baseOffset - len,
-              extentOffset: newValue.selection.baseOffset - len,
-            ),
-          );
-        }
+    if (char == _specialChar) {
+      final newText = newValue.text;
+      final oldStr = oldText.substring(0, offset);
+      final delStr = "$oldStr{#del#}";
+      String str = delStr;
+      controller._blocks.forEach((element) {
+        str = str.replaceFirst("${element.text}{#del#}", "");
+      });
+      if (str != delStr && str != oldStr) {
+        str += newValue.selection.textInside(newText) +
+            newValue.selection.textAfter(newText);
+
+        final len = newText.length - str.length;
+        return newValue.copyWith(
+          text: str,
+          selection: newValue.selection.copyWith(
+            baseOffset: newValue.selection.baseOffset - len,
+            extentOffset: newValue.selection.baseOffset - len,
+          ),
+        );
       }
     }
     return newValue;

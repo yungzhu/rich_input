@@ -1,3 +1,7 @@
+## [1.1.2] 2020-7-14
+
+-   Fixed: Fix matching error when string is special character
+
 ## [1.1.1] 2020-7-11
 
 -   Fixed: Two characters will be deleted on huawei

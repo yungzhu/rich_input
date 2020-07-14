@@ -111,7 +111,7 @@ class RichInputController extends TextEditingController {
   void insertBlock(RichBlock block) {
     if (_blocks.indexWhere((element) => element.text == block.text) < 0) {
       _blocks.add(block);
-      _exp = RegExp(_blocks.map((e) => e._key).join('|'));
+      _exp = RegExp(_blocks.map((e) => RegExp.escape(e._key)).join('|'));
     }
     insertText(block._key);
   }

@@ -1,6 +1,8 @@
-## [1.1.2] 2020-7-14
+## [1.1.3] 2020-7-15
 
--   Fixed: Fix matching error when string is special character
+-   Fixed: Fixed a bug where characters could not be displayed in some cases
+
+*   Fixed: Fix matching error when string is special character
 
 ## [1.1.1] 2020-7-11
 

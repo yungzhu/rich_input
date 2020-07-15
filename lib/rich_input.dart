@@ -160,10 +160,6 @@ class RichInputController extends TextEditingController {
 
   @override
   TextSpan buildTextSpan({TextStyle style, bool withComposing}) {
-    if (value.text.isEmpty) {
-      _blocks.clear();
-    }
-
     if (!value.composing.isValid || !withComposing) {
       return _getTextSpan(text, style);
     }
@@ -185,7 +181,7 @@ class RichInputController extends TextEditingController {
   }
 
   TextSpan _getTextSpan(String text, TextStyle style) {
-    if (_exp == null) {
+    if (_exp == null || text.isEmpty) {
       return TextSpan(style: style, text: text);
     }
 

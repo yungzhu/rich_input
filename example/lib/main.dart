@@ -100,6 +100,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   RaisedButton(
                     onPressed: () {
+                      _controller.clear();
+                    },
+                    child: const Text("clear"),
+                  ),
+                  RaisedButton(
+                    onPressed: () {
                       _focusNode.unfocus();
                     },
                     child: const Text("unfocus"),

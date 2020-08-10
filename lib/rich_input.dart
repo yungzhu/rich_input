@@ -116,12 +116,6 @@ class RichInputController extends TextEditingController {
     insertText(block._key);
   }
 
-  @override
-  void clear() {
-    _blocks.clear();
-    super.clear();
-  }
-
   /// Insert text in the cursor position
   void insertText(String text) {
     final selection = value.selection;
@@ -130,8 +124,8 @@ class RichInputController extends TextEditingController {
       value = value.copyWith(
         text: str,
         selection: selection.copyWith(
-          baseOffset: text.length,
-          extentOffset: text.length,
+          baseOffset: str.length,
+          extentOffset: str.length,
         ),
       );
     } else {
@@ -147,6 +141,12 @@ class RichInputController extends TextEditingController {
         ),
       );
     }
+  }
+
+  @override
+  void clear() {
+    _blocks.clear();
+    super.clear();
   }
 
   /// Get extended data information

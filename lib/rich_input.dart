@@ -104,6 +104,7 @@ class RichInput extends TextField {
 class RichInputController extends TextEditingController {
   final List<RichBlock> _blocks = [];
   RegExp _exp;
+  TextEditingValue _focusValue;
 
   RichInputController({String text}) : super(text: text);
 
@@ -118,35 +119,51 @@ class RichInputController extends TextEditingController {
 
   /// Insert text in the cursor position
   void insertText(String text) {
-    final selection = value.selection;
+    TextSelection selection = value.selection;
     if (selection.baseOffset == -1) {
-      final String str = this.text + text;
-      value = value.copyWith(
-        text: str,
-        selection: selection.copyWith(
-          baseOffset: str.length,
-          extentOffset: str.length,
-        ),
-      );
-    } else {
-      String str = selection.textBefore(this.text);
-      str += text;
-      str += selection.textAfter(this.text);
-
-      value = value.copyWith(
-        text: str,
-        selection: selection.copyWith(
-          baseOffset: selection.baseOffset + text.length,
-          extentOffset: selection.baseOffset + text.length,
-        ),
-      );
+      if (_focusValue != null) {
+        selection = _focusValue.selection;
+      } else {
+        final String str = this.text + text;
+        value = value.copyWith(
+          text: str,
+          selection: selection.copyWith(
+            baseOffset: str.length,
+            extentOffset: str.length,
+          ),
+        );
+        return;
+      }
     }
+
+    String str = selection.textBefore(this.text);
+    str += text;
+    str += selection.textAfter(this.text);
+
+    value = value.copyWith(
+      text: str,
+      selection: selection.copyWith(
+        baseOffset: selection.baseOffset + text.length,
+        extentOffset: selection.baseOffset + text.length,
+      ),
+    );
   }
 
   @override
   void clear() {
     _blocks.clear();
     super.clear();
+  }
+
+  @override
+  set value(TextEditingValue newValue) {
+    super.value = newValue;
+    if (newValue.selection.baseOffset != -1) {
+      _focusValue = newValue;
+    } else if (_focusValue != null &&
+        _focusValue.selection.baseOffset > newValue.text.length) {
+      _focusValue = null;
+    }
   }
 
   /// Get extended data information

@@ -256,6 +256,7 @@ class _RichInputFormat implements TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
+    if (controller == null) return newValue;
     final oldText = oldValue.text;
     final delLength = oldText.length - newValue.text.length;
     String char;

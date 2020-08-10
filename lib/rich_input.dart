@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 /// Expanded textfield support @someone #subjects with highlighting display.
 class RichInput extends TextField {
-  RichInput({
+  const RichInput({
     Key key,
     RichInputController controller,
     FocusNode focusNode,
@@ -35,7 +35,7 @@ class RichInput extends TextField {
     void Function(String) onChanged,
     void Function() onEditingComplete,
     void Function(String) onSubmitted,
-    // List<TextInputFormatter> inputFormatters,
+    List<TextInputFormatter> inputFormatters,
     bool enabled,
     double cursorWidth = 2.0,
     Radius cursorRadius,
@@ -82,7 +82,7 @@ class RichInput extends TextField {
           onChanged: onChanged,
           onEditingComplete: onEditingComplete,
           onSubmitted: onSubmitted,
-          inputFormatters: [_RichInputFormat(controller)],
+          inputFormatters: inputFormatters,
           enabled: enabled,
           cursorWidth: cursorWidth,
           cursorRadius: cursorRadius,
@@ -157,13 +157,58 @@ class RichInputController extends TextEditingController {
 
   @override
   set value(TextEditingValue newValue) {
-    super.value = newValue;
+    super.value = _formatValue(value, newValue);
     if (newValue.selection.baseOffset != -1) {
       _focusValue = newValue;
     } else if (_focusValue != null &&
         _focusValue.selection.baseOffset > newValue.text.length) {
       _focusValue = null;
     }
+  }
+
+  TextEditingValue _formatValue(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (oldValue == newValue ||
+        newValue.text.length >= oldValue.text.length ||
+        newValue.selection.baseOffset == -1) return newValue;
+    final oldText = oldValue.text;
+    final delLength = oldText.length - newValue.text.length;
+    String char;
+    int offset;
+    if (delLength == 1) {
+      char = oldText.substring(
+          newValue.selection.baseOffset, newValue.selection.baseOffset + 1);
+      offset = newValue.selection.baseOffset;
+    } else if (delLength == 2) {
+      // two characters will be deleted on huawei
+      char = oldText.substring(
+          newValue.selection.baseOffset + 1, newValue.selection.baseOffset + 2);
+      offset = newValue.selection.baseOffset + 1;
+    }
+
+    if (char == _specialChar) {
+      final newText = newValue.text;
+      final oldStr = oldText.substring(0, offset);
+      final delStr = "$oldStr{#del#}";
+      String str = delStr;
+      _blocks.forEach((element) {
+        str = str.replaceFirst("${element.text}{#del#}", "");
+      });
+      if (str != delStr && str != oldStr) {
+        str += newValue.selection.textInside(newText) +
+            newValue.selection.textAfter(newText);
+
+        final len = newText.length - str.length;
+        return newValue.copyWith(
+          text: str,
+          selection: newValue.selection.copyWith(
+            baseOffset: newValue.selection.baseOffset - len,
+            extentOffset: newValue.selection.baseOffset - len,
+          ),
+        );
+      }
+    }
+    return newValue;
   }
 
   /// Get extended data information
@@ -246,54 +291,4 @@ class RichBlock {
     @required this.data,
     this.style = const TextStyle(color: Colors.blue),
   }) : _key = "$text$_specialChar";
-}
-
-class _RichInputFormat implements TextInputFormatter {
-  final RichInputController controller;
-
-  const _RichInputFormat(this.controller);
-
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    if (controller == null) return newValue;
-    final oldText = oldValue.text;
-    final delLength = oldText.length - newValue.text.length;
-    String char;
-    int offset;
-    if (delLength == 1) {
-      char = oldText.substring(
-          newValue.selection.baseOffset, newValue.selection.baseOffset + 1);
-      offset = newValue.selection.baseOffset;
-    } else if (delLength == 2) {
-      // two characters will be deleted on huawei
-      char = oldText.substring(
-          newValue.selection.baseOffset + 1, newValue.selection.baseOffset + 2);
-      offset = newValue.selection.baseOffset + 1;
-    }
-
-    if (char == _specialChar) {
-      final newText = newValue.text;
-      final oldStr = oldText.substring(0, offset);
-      final delStr = "$oldStr{#del#}";
-      String str = delStr;
-      controller._blocks.forEach((element) {
-        str = str.replaceFirst("${element.text}{#del#}", "");
-      });
-      if (str != delStr && str != oldStr) {
-        str += newValue.selection.textInside(newText) +
-            newValue.selection.textAfter(newText);
-
-        final len = newText.length - str.length;
-        return newValue.copyWith(
-          text: str,
-          selection: newValue.selection.copyWith(
-            baseOffset: newValue.selection.baseOffset - len,
-            extentOffset: newValue.selection.baseOffset - len,
-          ),
-        );
-      }
-    }
-    return newValue;
-  }
 }

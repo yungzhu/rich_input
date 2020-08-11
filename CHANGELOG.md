@@ -1,8 +1,16 @@
+## [1.2.1] 2020-8-11
+
+-   Incompatible modification: RichBlock becomes non-const type.
+
+-   Add special character filtering, these special characters will cause input field deletion to be invalid.
+
+-   Optimize the problem that the insert position is not correct when the input box loses focus
+
 ## [1.1.3] 2020-7-15
 
 -   Fixed: Fixed a bug where characters could not be displayed in some cases
 
-*   Fixed: Fix matching error when string is special character
+-   Fixed: Fix matching error when string is special character
 
 ## [1.1.1] 2020-7-11
 

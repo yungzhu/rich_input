@@ -278,6 +278,7 @@ class RichInputController extends TextEditingController {
 }
 
 const _specialChar = "\u200B";
+final _filterCharacters = RegExp("[٩|۶]");
 
 /// Rich Media Data Blocks
 class RichBlock {
@@ -286,9 +287,10 @@ class RichBlock {
   final TextStyle style;
   final String _key;
 
-  const RichBlock({
-    @required this.text,
+  RichBlock({
+    @required String text,
     @required this.data,
     this.style = const TextStyle(color: Colors.blue),
-  }) : _key = "$text$_specialChar";
+  })  : text = text.replaceAll(_filterCharacters, ""),
+        _key = "${text.replaceAll(_filterCharacters, "")}$_specialChar";
 }

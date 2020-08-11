@@ -10,6 +10,7 @@ Language: [English](README.md) | [中文简体](README-ZH.md)
 -   Support @someone #topic and insert emojis, etc
 -   Support for custom highlighting, and custom styles
 -   Support for using the backspace key to delete entire special text blocks
+-   Support for special character handling
 -   Support for custom data fields to enhance rich text
 
 ![Demo](demo.png)
